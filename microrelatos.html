@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microrelatos - Atlas de Litio</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0c0c0c; /* Fondo hiper oscuro */
+            color: #f4f1ea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden; /* Evita el scroll */
+            user-select: none;
+        }
+
+        /* --- BOTÓN PARA VOLVER AL ATLAS --- */
+        .volver-btn {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            color: #888;
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+            z-index: 10;
+        }
+
+        .volver-btn:hover {
+            color: #f4f1ea;
+        }
+
+        /* --- VISOR DE LA IMAGEN --- */
+        .imagen-contenedor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 85vw;
+            max-height: 85vh;
+        }
+
+        #img-relato {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            box-shadow: 0 0 45px rgba(0, 0, 0, 1);
+            cursor: pointer; /* Indica que se puede clickear para avanzar */
+            border-radius: 2px;
+            transition: transform 0.2s ease;
+        }
+
+        #img-relato:hover {
+            transform: scale(1.005);
+        }
+
+        #contador-relatos {
+            color: #555;
+            font-family: 'Georgia', serif;
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-top: 15px;
+        }
+
+        /* --- FLECHAS DE NAVEGACIÓN --- */
+        .nav-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #555;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 24px;
+            padding: 16px 20px;
+            cursor: pointer;
+            position: absolute;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #f4f1ea;
+        }
+
+        .prev-btn { left: 40px; top: 50%; transform: translateY(-50%); }
+        .next-btn { right: 40px; top: 50%; transform: translateY(-50%); }
+    </style>
+</head>
+<body>
+
+    <a href="atlas litio.html" class="volver-btn">&#8592; Volver al Atlas</a>
+
+    <button class="nav-btn prev-btn" onclick="cambiarRelato(-1)">&#10094;</button>
+
+    <div class="imagen-contenedor">
+        <img id="img-relato" src="" alt="Microrelato" onclick="cambiarRelato(1)">
+        <div id="contador-relatos">1 / 3</div>
+    </div>
+
+    <button class="nav-btn next-btn" onclick="cambiarRelato(1)">&#10095;</button>
+
+    <script>
+        // 1. AGREGA AQUÍ LOS NOMBRES DE TUS PNGs
+        const relatos = [
+            "imagenes/tu_relato_1.png",
+            "imagenes/tu_relato_2.png",
+             "imagenes/tu_relato_3.png",
+        ];
+
+        let indiceActual = 0;
+
+        function cambiarRelato(direccion) {
+            indiceActual += direccion;
+
+            if (indiceActual >= relatos.length) {
+                indiceActual = 0;
+            } else if (indiceActual < 0) {
+                indiceActual = relatos.length - 1;
+            }
+
+            actualizarImagen();
+        }
+
+        function actualizarImagen() {
+            const img = document.getElementById("img-relato");
+            const contador = document.getElementById("contador-relatos");
+            
+            img.src = relatos[indiceActual];
+            contador.textContent = `${indiceActual + 1} / ${relatos.length}`;
+        }
+
+        // Cargar la primera imagen al iniciar la página
+        window.onload = actualizarImagen;
+
+        // Soporte para flechas del teclado
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "ArrowRight") cambiarRelato(1);
+            if (e.key === "ArrowLeft") cambiarRelato(-1);
+            // Si tocan Escape, los devolvemos al atlas
+            if (e.key === "Escape") window.location.href = "atlas litio.html";
+        });
+    </script>
+</body>
+</html>
